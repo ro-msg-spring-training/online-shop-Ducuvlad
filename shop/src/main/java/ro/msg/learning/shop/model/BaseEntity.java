@@ -12,13 +12,12 @@ import java.io.Serializable;/*
 
 @MappedSuperclass
 @Data
-public abstract class BaseEntity <ID extends Serializable> implements Serializable {
+public abstract class BaseEntity <I extends Serializable> implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private ID id;
-    public BaseEntity() {
-    }
+    private I id;
+
 
     @Override
     public String toString() {

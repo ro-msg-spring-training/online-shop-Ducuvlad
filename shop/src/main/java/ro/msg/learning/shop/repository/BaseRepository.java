@@ -11,6 +11,6 @@ import java.io.Serializable;
  */
 @NoRepositoryBean
 @Transactional
-public interface BaseRepository<T extends BaseEntity<ID>, ID extends Serializable>
-        extends JpaRepository<T, ID> {
+public interface BaseRepository<T extends BaseEntity<I>, I extends Serializable>
+        extends JpaRepository<T, I> {
 }
