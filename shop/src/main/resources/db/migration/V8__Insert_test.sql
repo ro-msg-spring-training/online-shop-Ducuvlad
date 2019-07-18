@@ -1,0 +1,1 @@
+insert into Supplier_tbl (name) values ('Killer queen');
