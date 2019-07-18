@@ -1,4 +1,9 @@
-package ro.msg.learning.shop.Repository;
+package ro.msg.learning.shop.repository;
 
-public interface SupplierRepository {
+
+import ro.msg.learning.shop.model.Supplier;
+/*
+
+ */
+public interface SupplierRepository extends BaseRepository<Supplier, Integer> {
 }

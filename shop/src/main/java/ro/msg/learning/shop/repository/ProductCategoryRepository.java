@@ -1,4 +1,8 @@
-package ro.msg.learning.shop.Repository;
+package ro.msg.learning.shop.repository;
 
-public interface ProductCategoryRepository {
+import ro.msg.learning.shop.model.ProductCategory;
+/*
+
+ */
+public interface ProductCategoryRepository extends BaseRepository<ProductCategory, Integer> {
 }

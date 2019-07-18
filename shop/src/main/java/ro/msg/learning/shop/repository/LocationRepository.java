@@ -1,6 +1,8 @@
-package ro.msg.learning.shop.Repository;
+package ro.msg.learning.shop.repository;
 
-import ro.msg.learning.shop.Model.Location;
+import ro.msg.learning.shop.model.Location;
+/*
 
+ */
 public interface LocationRepository extends BaseRepository<Location, Integer> {
 }

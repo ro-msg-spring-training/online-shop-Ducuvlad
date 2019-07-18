@@ -1,4 +1,9 @@
-package ro.msg.learning.shop.Repository;
+package ro.msg.learning.shop.repository;
 
-public interface ProductRepository {
+import ro.msg.learning.shop.model.Product;
+
+/*
+
+ */
+public interface ProductRepository extends BaseRepository<Product, Integer> {
 }
