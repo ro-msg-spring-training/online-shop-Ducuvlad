@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Data
 public class ProductDTO implements Serializable {
     public ProductDTO(Product product) {
-        this.productID = product.getId();
+        //this.productID = product.getId();//todo I don't need this
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = product.getPrice();
