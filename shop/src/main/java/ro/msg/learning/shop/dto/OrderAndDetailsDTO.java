@@ -20,16 +20,16 @@ public class OrderAndDetailsDTO implements Serializable {
     private String city;
     private String county;
     private String streetAddress;
-    private int shippedFromID;
-    private List<OrderDetail> details;
+    private List<ProductQuantityDTO> products;
+    private int customerID;
 
-    public OrderAndDetailsDTO(Order order, List<OrderDetail> orderDetail) {
+    public OrderAndDetailsDTO(Order order, List<ProductQuantityDTO> productsDetails) {
         this.city = order.getCity();
         this.country = order.getCountry();
         this.county = order.getCounty();
         this.streetAddress =order.getStreetAddress();
         this.createdAt=order.getCreatedAt();
-        this.details=orderDetail;
-        this.shippedFromID=order.getShippedFrom().getId();
+        this.products=productsDetails;
+        this.customerID=order.getCustomer().getId();
     }
 }

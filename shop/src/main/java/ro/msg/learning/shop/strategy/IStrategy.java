@@ -1,6 +1,8 @@
 package ro.msg.learning.shop.strategy;
 
 import lombok.AllArgsConstructor;
+import ro.msg.learning.shop.dto.OrderAndDetailsDTO;
+import ro.msg.learning.shop.dto.ProductQuantityDTO;
 import ro.msg.learning.shop.model.Location;
 import ro.msg.learning.shop.model.Order;
 import ro.msg.learning.shop.model.Stock;
@@ -12,6 +14,6 @@ import java.util.List;
 
 public interface IStrategy {
 
-    public List<Stock> getLocationForOrder(Order order, StockRepository stockRepository, OrderDetailRepository orderDetailRepository, LocationRepository locationRepository) throws Exception;
+    List<Location> getLocationsForOrder(OrderAndDetailsDTO order) ;
 }
 

@@ -3,17 +3,19 @@ package ro.msg.learning.shop.service;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
+import ro.msg.learning.shop.dto.OrderAndDetailsDTO;
+import ro.msg.learning.shop.dto.ProductQuantityDTO;
+import ro.msg.learning.shop.exception.NoLocationException;
+import ro.msg.learning.shop.model.Location;
 import ro.msg.learning.shop.model.OrderDetail;
 import ro.msg.learning.shop.model.Order;
 import ro.msg.learning.shop.model.Stock;
-import ro.msg.learning.shop.repository.LocationRepository;
-import ro.msg.learning.shop.repository.OrderDetailRepository;
-import ro.msg.learning.shop.repository.OrderRepository;
-import ro.msg.learning.shop.repository.StockRepository;
+import ro.msg.learning.shop.repository.*;
 import ro.msg.learning.shop.strategy.IStrategy;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @AllArgsConstructor
@@ -23,7 +25,7 @@ public class OrderAndDetailService {
     private OrderDetailRepository orderDetailRepository;
     private StockRepository stockRepository;
     private LocationRepository locationRepository;
-    //todo you need to give repos to IStrategy
+    private CustomerRepository customerRepository;
 
 
 
@@ -42,18 +44,39 @@ public class OrderAndDetailService {
         return orderRepository.save(Order);
     }
 
-    public int findLocation(Order order){
-        /*
-        EXECUTE STRATEGY
-       */
+    public List<Order> saveOrders (OrderAndDetailsDTO requirements){
+        //create orders for each different location
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
         IStrategy strategy=ctx.getBean(IStrategy.class);
+        List<Order> newOrders=new ArrayList<>();
         try {
-            List<Stock> productStock=strategy.getLocationForOrder(order,stockRepository,orderDetailRepository,locationRepository);
-            productStock.stream().forEach(s->s.setQuantity(s.getQuantity()-orderDetailRepository.findOrderDetailsByProductID(s.getStockID().getPurchaseID())));
-            //for each stock that has lid=location sent from strategy , stock.quantity-orderDetail.Quantity where orderDetail.pid=stock.pid
-        } catch (Exception e) {
+            //get list of stocks used by the order
+            List<Location> productLocations=strategy.getLocationsForOrder(requirements);
+            List<ProductQuantityDTO> products=requirements.getProducts();
+            for(int i=0;i<productLocations.size();i++){
+                Order newOrder=new Order(
+                    requirements.getCreatedAt(),
+                        requirements.getCountry(),
+                        requirements.getCity(),
+                        requirements.getCounty(),
+                        requirements.getStreetAddress(),
+                        productLocations.get(i),
+                        customerRepository.getOne(requirements.getCustomerID())
+                );
+                Optional<Stock> stock=stockRepository.findStockDetailByPK(products.get(i).getProductID(),productLocations.get(i).getId());
+                //modify stock quantity
+                Stock s;
+                if(stock.isPresent()) {
+                    s = stock.get();
+                    s.setQuantity(s.getQuantity() - requirements.getProducts().get(i).getQuantity());
+                    //save newOrder
+                    orderRepository.save(newOrder);
+                    newOrders.add(newOrder);
+                }
+            }
+        } catch (NoLocationException e) {
             e.printStackTrace();
         }
+        return newOrders;
     }
 }

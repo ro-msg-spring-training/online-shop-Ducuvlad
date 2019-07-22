@@ -10,6 +10,7 @@ import javax.persistence.Table;
 /*
 
  */
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

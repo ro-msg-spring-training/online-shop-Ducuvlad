@@ -12,9 +12,9 @@ import java.util.Collection;
 
  */
 public interface OrderDetailRepository  extends JpaRepository<OrderDetail, OrderDetailID> {
-    @Query("SELECT od FROM OrderDetail od where od.orderDetailID.oid = orderID")
+    /*@Query("SELECT od FROM OrderDetail od where od.orderDetailID.oid = orderID")
     Collection<OrderDetail> findOrderDetailsByOrderID(@Param("orderID") int id);
 
-    @Query("SELECT od FROM OrderDetail od where od.orderDetailID.pid = purchaseID")
-    OrderDetail findOrderDetailsByProductID(@Param("purchaseID") int purchaseID);
+    @Query("SELECT od FROM OrderDetail od where od.orderDetailID.pid = productID")
+    OrderDetail findOrderDetailsByProductID(@Param("productID") int productID);*/
 }

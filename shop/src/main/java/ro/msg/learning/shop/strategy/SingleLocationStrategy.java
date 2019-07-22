@@ -1,50 +1,62 @@
 package ro.msg.learning.shop.strategy;
 
 import lombok.AllArgsConstructor;
-import ro.msg.learning.shop.model.Location;
-import ro.msg.learning.shop.model.Order;
-import ro.msg.learning.shop.model.OrderDetail;
-import ro.msg.learning.shop.model.Stock;
+import ro.msg.learning.shop.dto.OrderAndDetailsDTO;
+import ro.msg.learning.shop.dto.ProductQuantityDTO;
+import ro.msg.learning.shop.exception.NoLocationException;
+import ro.msg.learning.shop.model.*;
 import ro.msg.learning.shop.repository.LocationRepository;
 import ro.msg.learning.shop.repository.OrderDetailRepository;
 import ro.msg.learning.shop.repository.StockRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class SingleLocationStrategy implements IStrategy {
 
-
+    StockRepository stockRepository;
+    OrderDetailRepository orderDetailRepository;
+    LocationRepository locationRepository;
     @Override
-    public List<Stock> getLocationForOrder(Order order, StockRepository stockRepository, OrderDetailRepository orderDetailRepository, LocationRepository locationRepository) throws Exception  {
-        /*
-         FOR every OrderDetail with orderDetail.ID==order.ID
-            FOR every Location
-                FOR every Stock with Stock.ProductID==OrderDetail.ProductID AND Stock.quantity>=OrderDetail.quantity) AND Stock.LocationID==Location.ID
-
-         query: get Location.lid that has all stocks needed by orderDetail with necessary quantity
-
-        */
-        Boolean foundStock;
-        List<Stock> productStock=new ArrayList<>();
-        Optional<Stock> locationID;
-        for(Location location:locationRepository.findAll()) {
-            foundStock = true;
-            for (OrderDetail orderDetail : orderDetailRepository.findOrderDetailsByOrderID(order.getId())) {
-                        locationID = stockRepository.findStock(orderDetail.getOrderDetailID().getProductID(),
-                        orderDetail.getQuantity(),
-                        location.getId());
-                if(!locationID.isPresent()){
-                    foundStock=false;
-                }
-                if (foundStock) {
-                    productStock.add(locationID.get());
-                    return productStock;
-                }
-            }
+    public List<Location>  getLocationsForOrder(OrderAndDetailsDTO order) {
+        List<Location> locations = locationRepository.findAll()
+                .stream()
+                .filter(location -> checkIfLocationHasAll(order.getProducts(),location))
+                .collect(Collectors.toList());
+        Optional<Location> singleLocation=locations.stream().min(Comparator.comparingInt(BaseEntity::getId));
+        if(locations.size()==0)
+            throw new NoLocationException("No location that has all products has been found");
+        List<Location> singleLocations=new ArrayList<>();
+        for(int i=0;i<order.getProducts().size();i++)
+        {
+            singleLocations.add(singleLocation.get());
         }
-        throw new Exception("NO LOCATION THAT CONTAINS ALL PRODUCTS FOUND");
+        return singleLocations;
+    }
+
+
+    public boolean checkIfLocationHasAll(List<ProductQuantityDTO> productsQuantities,Location location )   {
+
+        List<Stock> stocks = stockRepository.findByLocation(location.getId());
+        List<Integer> stockProductsIds = stocks.stream()
+                .map(stock -> stock.getStockID().getProductID())
+                .collect(Collectors.toList());
+
+        List<Integer> productsIds = productsQuantities.stream()
+                .map(ProductQuantityDTO::getProductID)
+                .collect(Collectors.toList());
+
+        if (!stockProductsIds.containsAll(productsIds)) return false;
+
+        return productsQuantities.stream()
+                .allMatch(product -> (product.getQuantity() <=
+                        stocks.stream().filter(s->s.getStockID().getProductID()==product.getProductID()).findFirst().get().getQuantity()));
+
+
+
     }
 }
