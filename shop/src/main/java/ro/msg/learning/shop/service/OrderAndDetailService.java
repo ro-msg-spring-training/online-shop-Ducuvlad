@@ -24,7 +24,6 @@ public class OrderAndDetailService {
     private OrderRepository orderRepository;
     private OrderDetailRepository orderDetailRepository;
     private StockRepository stockRepository;
-    private LocationRepository locationRepository;
     private CustomerRepository customerRepository;
 
 
@@ -53,27 +52,28 @@ public class OrderAndDetailService {
             //get list of stocks used by the order
             List<Location> productLocations=strategy.getLocationsForOrder(requirements);
             List<ProductQuantityDTO> products=requirements.getProducts();
-            for(int i=0;i<productLocations.size();i++){
-                Order newOrder=new Order(
-                    requirements.getCreatedAt(),
-                        requirements.getCountry(),
-                        requirements.getCity(),
-                        requirements.getCounty(),
-                        requirements.getStreetAddress(),
-                        productLocations.get(i),
-                        customerRepository.getOne(requirements.getCustomerID())
-                );
-                Optional<Stock> stock=stockRepository.findStockDetailByPK(products.get(i).getProductID(),productLocations.get(i).getId());
-                //modify stock quantity
+            //modify stock quantity
+            for(int i=0;i<productLocations.size();i++) {
+                Optional<Stock> stock = stockRepository.findStockDetailByPK(products.get(i).getProductID(), productLocations.get(i).getId());
+
                 Stock s;
-                if(stock.isPresent()) {
+                if (stock.isPresent()) {
                     s = stock.get();
                     s.setQuantity(s.getQuantity() - requirements.getProducts().get(i).getQuantity());
-                    //save newOrder
-                    orderRepository.save(newOrder);
-                    newOrders.add(newOrder);
                 }
             }
+            //save orders
+            productLocations.stream().distinct().map(location->new Order(requirements.getCreatedAt(),
+                    requirements.getCountry(),
+                    requirements.getCity(),
+                    requirements.getCounty(),
+                    requirements.getStreetAddress(),
+                    location,
+                    customerRepository.getOne(requirements.getCustomerID())))
+                    .forEach(order ->
+                    {newOrders.add(order);
+                    orderRepository.save(order);
+                    } );
         } catch (NoLocationException e) {
             e.printStackTrace();
         }
