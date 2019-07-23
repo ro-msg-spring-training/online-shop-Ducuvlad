@@ -25,6 +25,7 @@ public class SingleLocationStrategy implements IStrategy {
                 .stream()
                 .filter(location -> checkIfLocationHasAll(order.getProducts(),location))
                 .collect(Collectors.toList());
+        //compare by ID
         Optional<Location> singleLocation=locations.stream().min(Comparator.comparingInt(BaseEntity::getId));
         if(locations.size()==0)
             throw new NoLocationException("No location that has all products has been found");
