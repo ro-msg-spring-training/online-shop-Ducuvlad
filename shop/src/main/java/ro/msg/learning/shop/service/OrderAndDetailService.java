@@ -13,8 +13,6 @@ import ro.msg.learning.shop.model.Stock;
 import ro.msg.learning.shop.repository.*;
 import ro.msg.learning.shop.strategy.IStrategy;
 
-import javax.transaction.Transactional;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

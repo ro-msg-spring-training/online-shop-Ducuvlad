@@ -3,9 +3,8 @@ package ro.msg.learning.shop.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ro.msg.learning.shop.model.Location;
 import ro.msg.learning.shop.model.Order;
-import ro.msg.learning.shop.model.OrderDetail;
+
 
 import java.io.Serializable;
 import java.util.Date;

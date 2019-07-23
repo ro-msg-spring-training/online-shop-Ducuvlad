@@ -6,8 +6,6 @@ import org.springframework.data.repository.query.Param;
 import ro.msg.learning.shop.model.Stock;
 import ro.msg.learning.shop.model.StockID;
 
-import javax.persistence.Table;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
