@@ -6,7 +6,6 @@ import ro.msg.learning.shop.dto.ProductQuantityDTO;
 import ro.msg.learning.shop.exception.NoLocationException;
 import ro.msg.learning.shop.model.*;
 import ro.msg.learning.shop.repository.LocationRepository;
-import ro.msg.learning.shop.repository.OrderDetailRepository;
 import ro.msg.learning.shop.repository.StockRepository;
 
 import java.util.ArrayList;
