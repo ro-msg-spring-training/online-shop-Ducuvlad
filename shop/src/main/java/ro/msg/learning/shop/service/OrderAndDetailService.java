@@ -1,7 +1,6 @@
 package ro.msg.learning.shop.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.dto.OrderAndDetailsDTO;
 import ro.msg.learning.shop.dto.ProductQuantityDTO;
@@ -35,7 +34,6 @@ public class OrderAndDetailService {
         return Order.orElse(null);
 
     }
-
 
     public Order saveOrder(Order Order) {
         return orderRepository.save(Order);

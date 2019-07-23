@@ -5,7 +5,6 @@ import ro.msg.learning.shop.dto.ProductDTO;
 import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.service.ProductService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,9 +33,9 @@ public class ProductController {
 
     @PostMapping("/")
     public ProductDTO createProduct(@RequestBody ProductDTO product) {
-        //I need to find the ProductCategory and Supplier so I use the DTOToProduct from product service
+        //I need to find the ProductCategory and Supplier so I use the dtoToProduct from product service
         //that allows me to get to said classes repos
-        Product productToSave=productService.DTOToProduct(product);
+        Product productToSave=productService.dtoToProduct(product);
         productService.saveProduct(productToSave);
         return product;
     }
@@ -48,7 +47,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ProductDTO updateProduct(@RequestBody ProductDTO product,@PathVariable("id") Integer id) {
-        return productService.ProductToDTO(productService.updateProduct(id,
+        return productService.productToDTO(productService.updateProduct(id,
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),

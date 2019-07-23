@@ -18,9 +18,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class SingleLocationStrategy implements IStrategy {
 
-    StockRepository stockRepository;
-    OrderDetailRepository orderDetailRepository;
-    LocationRepository locationRepository;
+    private StockRepository stockRepository;
+    private LocationRepository locationRepository;
     @Override
     public List<Location>  getLocationsForOrder(OrderAndDetailsDTO order) {
         List<Location> locations = locationRepository.findAll()
@@ -39,7 +38,7 @@ public class SingleLocationStrategy implements IStrategy {
     }
 
 
-    public boolean checkIfLocationHasAll(List<ProductQuantityDTO> productsQuantities,Location location )   {
+    private boolean checkIfLocationHasAll(List<ProductQuantityDTO> productsQuantities,Location location )   {
 
         List<Stock> stocks = stockRepository.findByLocation(location.getId());
         List<Integer> stockProductsIds = stocks.stream()

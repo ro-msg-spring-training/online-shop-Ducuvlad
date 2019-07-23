@@ -65,11 +65,10 @@ public class ProductService {
     }
     
 
-    public ProductDTO ProductToDTO(Product product) {
-        ProductCategory productCategory = product.getProductCategory();
+    public ProductDTO productToDTO(Product product) {
         return new ProductDTO(product);
     }
-    public Product DTOToProduct(ProductDTO productDTO) {
+    public Product dtoToProduct(ProductDTO productDTO) {
 
         Product product = new Product(
                 productDTO.getName(),

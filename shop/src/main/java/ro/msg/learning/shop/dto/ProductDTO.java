@@ -12,6 +12,16 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Data
 public class ProductDTO implements Serializable {
+    private Integer productID;
+    private String name;
+    private String description;
+    private BigDecimal price;
+    private Double weight;
+    private String imageUrl;
+    private Integer categoryID;
+    private String categoryName;
+    private String categoryDescription;
+    private Integer supplierID;
     public ProductDTO(Product product) {
         this.name = product.getName();
         this.description = product.getDescription();
@@ -24,15 +34,4 @@ public class ProductDTO implements Serializable {
         this.supplierID = product.getSupplier().getId();
     }
 
-    private Integer productID;
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private Double weight;
-    private String imageUrl;
-    private Integer categoryID;
-    private String categoryName;
-    private String categoryDescription;
-    private Integer supplierID;
-    //private String supplierName;
 }

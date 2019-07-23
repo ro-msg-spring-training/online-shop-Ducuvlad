@@ -15,9 +15,8 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class MostAbundantStrategy implements IStrategy {
-    StockRepository stockRepository;
-    OrderDetailRepository orderDetailRepository;
-    LocationRepository locationRepository;
+    private StockRepository stockRepository;
+    private LocationRepository locationRepository;
     @Override
     public List<Location>  getLocationsForOrder(OrderAndDetailsDTO order) {
         //List<Location> locations = locationRepository.findAll();
