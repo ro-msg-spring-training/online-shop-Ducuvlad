@@ -36,7 +36,7 @@ public class MostAbundantStrategy implements IStrategy {
                         else throw new  NoLocationException("No location with the necesary stock found for a product ERROR:2");
                     }
                     else
-                        throw new  NoLocationException("No location with the necesary stock found for a product ERROR:1");
+                        throw new  NoLocationException("No location with the necesary stock found for product "+product.getProductID()+" ERROR:1");
                 })
                 .collect(Collectors.toList());
     }

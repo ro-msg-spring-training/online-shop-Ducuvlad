@@ -23,7 +23,7 @@ public class OrderAndDetailService {
     private OrderDetailRepository orderDetailRepository;
     private StockRepository stockRepository;
     private CustomerRepository customerRepository;
-
+    private final IStrategy strategy;
 
 
     public List<OrderDetail> findAll() {
@@ -43,8 +43,9 @@ public class OrderAndDetailService {
 
     public List<Order> saveOrders (OrderAndDetailsDTO requirements){
         //create orders for each different location
-        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        IStrategy strategy=ctx.getBean(IStrategy.class);
+        /*AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+        ctx.refresh();
+        IStrategy strategy=ctx.getBean(IStrategy.class);*/
         List<Order> newOrders=new ArrayList<>();
         try {
             //get list of stocks used by the order

@@ -19,7 +19,8 @@ public interface StockRepository  extends JpaRepository<Stock, StockID> {
     /*@Query("SELECT s FROM Stock s where s.stockID.pid = pid and s.stockID.lid =lid  and s.quantity>=detailQuantity")
     Optional<Stock> findStock(@Param("productID") int pid, @Param("detailQuantity") int detailQuantity, @Param("LocationID") int lid);*/
 
-    @Query("SELECT s.stockID.locationID FROM Stock s WHERE s.stockID.productID = :productID  and s.quantity=max(s.quantity) and s.quantity>=:detailQuantity")
+    @Query("SELECT s.stockID.locationID FROM Stock s WHERE s.stockID.productID = :productID  and s.quantity>=:detailQuantity"+
+    " and  s.quantity=(SELECT max(s.quantity) from Stock s where s.stockID.productID =:productID)")
     Optional<Integer> findLargestLocationForProduct(@Param("productID") int pid, @Param("detailQuantity") int detailQuantity);
 
     @Query(value = "SELECT s FROM Stock s WHERE  s.stockID.locationID = :LocationID")

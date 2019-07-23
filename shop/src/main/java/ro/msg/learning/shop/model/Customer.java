@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;/*
 
  */
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

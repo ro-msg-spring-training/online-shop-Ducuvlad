@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class Order extends BaseEntity<Integer> {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "lid")
     private Location shippedFrom;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "cid")
     private Customer customer;
