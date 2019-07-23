@@ -2,12 +2,14 @@ package ro.msg.learning.shop.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 /*
 
  */
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Data
