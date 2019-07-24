@@ -45,7 +45,7 @@ public class OrderAndDetailService {
         ctx.refresh();
         IStrategy strategy=ctx.getBean(IStrategy.class);*/
         List<Order> newOrders=new ArrayList<>();
-        try {
+
             //get list of stocks used by the order
             List<Location> productLocations=strategy.getLocationsForOrder(requirements);
             List<ProductQuantityDTO> products=requirements.getProducts();
@@ -55,6 +55,7 @@ public class OrderAndDetailService {
 
                 Stock s;
                 if (stock.isPresent()) {
+                    //no need to verify if there is enough stock because we do it in strategy
                     s = stock.get();
                     s.setQuantity(s.getQuantity() - requirements.getProducts().get(i).getQuantity());
                 }
@@ -71,9 +72,7 @@ public class OrderAndDetailService {
                     {newOrders.add(order);
                     orderRepository.save(order);
                     } );
-        } catch (NoLocationException e) {
-            e.printStackTrace();
-        }
+
         return newOrders;
     }
 }

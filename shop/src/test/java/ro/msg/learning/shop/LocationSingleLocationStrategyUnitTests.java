@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -15,7 +16,7 @@ import ro.msg.learning.shop.repository.LocationRepository;
 import ro.msg.learning.shop.repository.OrderDetailRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
 import ro.msg.learning.shop.repository.StockRepository;
-import ro.msg.learning.shop.strategy.MostAbundantStrategy;
+import ro.msg.learning.shop.strategy.SingleLocationStrategy;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -23,11 +24,12 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes={MostAbundantStrategy.class})
-public class MostAbundantLocationStrategy {
+@ContextConfiguration(classes={SingleLocationStrategy.class})
+public class LocationSingleLocationStrategyUnitTests {
     @Autowired
-    MostAbundantStrategy mostAbundantStrategy;
+    SingleLocationStrategy singleLocationStrategy;
     @MockBean
     StockRepository stockRepository;
     @MockBean
@@ -50,18 +52,17 @@ public class MostAbundantLocationStrategy {
         Mockito.when(locationRepository.findById(3)).thenReturn(java.util.Optional.of(location3));
         Mockito.when(locationRepository.findAll()).thenReturn(Arrays.asList(location1, location2, location3));
 
-
         StockID stockID1=new StockID(1,1);
         StockID stockID2=new StockID(2,1);
         StockID stockID3=new StockID(1,2);
         Stock stock1=new Stock(stockID1,50);
         Stock stock2=new Stock(stockID2,50);
-        Stock stock3=new Stock(stockID3,100);
+        Stock stock3=new Stock(stockID3,50);
 
         Mockito.when(stockRepository.findByLocation(1)).thenReturn(Arrays.asList(stock1,stock2));
         Mockito.when(stockRepository.findByLocation(2)).thenReturn(Collections.singletonList(stock3));
-        Mockito.when(stockRepository.findLargestLocationForProduct(1,5)).thenReturn(java.util.Optional.of(2));
-        Mockito.when(stockRepository.findLargestLocationForProduct(2,5)).thenReturn(java.util.Optional.of(1));
+
+
     }
     @Test
     public void contextLoads() {
@@ -69,12 +70,10 @@ public class MostAbundantLocationStrategy {
         ProductQuantityDTO detail2=new ProductQuantityDTO(2,5);
         OrderAndDetailsDTO order1=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Collections.singletonList(detail1),1);
         OrderAndDetailsDTO order2=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13",Arrays.asList(detail1,detail2),1);
-        Optional<Location> location1=locationRepository.findById(2);
-        Optional<Location> location2=locationRepository.findById(1);
-        if(location1.isPresent() && location2.isPresent()) {
-            assertThat(mostAbundantStrategy.getLocationsForOrder(order1)).isEqualTo(Collections.singletonList(location1.get()));
-            assertThat(mostAbundantStrategy.getLocationsForOrder(order2)).isEqualTo(Arrays.asList(location1.get(),location2.get()));
+        Optional<Location> location=locationRepository.findById(1);
+        if(location.isPresent()) {
+            assertThat(singleLocationStrategy.getLocationsForOrder(order1)).isEqualTo(Collections.singletonList(location.get()));
+            assertThat(singleLocationStrategy.getLocationsForOrder(order2)).isEqualTo(Arrays.asList(location.get(),location.get()));
         }
-        //todo test exception
     }
 }
