@@ -24,14 +24,16 @@ public class Customer extends BaseEntity<Integer> {
     private String password;
     @Column(name = "username", nullable = false)
     private String username;
-
+    @Column(name = "emailaddress", nullable = false)
+    private String emailAddress;
 
     @Override
     public String toString() {
         return "Base{" +
                 "Customer='" + firstName  +
                 " " + lastName + '\'' +
-                ", username=" + username +
+                ", username=" + username + '\'' +
+                ", username=" + emailAddress +
                 "} " + super.toString();
     }
 }
