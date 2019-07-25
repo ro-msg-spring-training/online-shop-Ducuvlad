@@ -20,6 +20,7 @@ import java.sql.Date;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -37,7 +38,7 @@ public class OrderAndDetailServiceTests {
         ProductQuantityDTO detail2=new ProductQuantityDTO(2,5);
         OrderAndDetailsDTO order1=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Collections.singletonList(detail1),1);
         OrderAndDetailsDTO order2=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Arrays.asList(detail1,detail2),1);
-
+        assertThat(detail1.getQuantity()).isEqualTo(5);
 
         mvc.perform( MockMvcRequestBuilders
                 .post("/orders/")
@@ -66,7 +67,7 @@ public class OrderAndDetailServiceTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].streetAddress").value("Str nuf nr 13"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].shippedFrom.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].customerID.id").value(1));
-        assert(true);
+
     }
 
     @Test
@@ -77,6 +78,8 @@ public class OrderAndDetailServiceTests {
         ProductQuantityDTO detail2=new ProductQuantityDTO(2,1000);
         OrderAndDetailsDTO order1=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Collections.singletonList(detail1),1);
         OrderAndDetailsDTO order2=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Arrays.asList(detail1,detail2),1);
+        assertThat(detail1.getQuantity()).isEqualTo(1000);
+
         mvc.perform(MockMvcRequestBuilders
                 .post("/orders/")
                 .content(asJsonString(order1))
@@ -90,7 +93,6 @@ public class OrderAndDetailServiceTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-        assert(true);
     }
 
     public static String asJsonString(final Object obj) {

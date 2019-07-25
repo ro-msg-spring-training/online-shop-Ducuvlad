@@ -12,8 +12,6 @@ import ro.msg.learning.shop.dto.OrderAndDetailsDTO;
 import ro.msg.learning.shop.dto.ProductQuantityDTO;
 import ro.msg.learning.shop.model.*;
 import ro.msg.learning.shop.repository.LocationRepository;
-import ro.msg.learning.shop.repository.OrderDetailRepository;
-import ro.msg.learning.shop.repository.ProductRepository;
 import ro.msg.learning.shop.repository.StockRepository;
 import ro.msg.learning.shop.strategy.MostAbundantStrategy;
 
