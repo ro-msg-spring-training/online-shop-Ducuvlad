@@ -14,6 +14,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ro.msg.learning.shop.dto.OrderAndDetailsDTO;
 import ro.msg.learning.shop.dto.ProductQuantityDTO;
+import ro.msg.learning.shop.exception.StringObjectMapperException;
+
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.Collections;
@@ -64,7 +66,7 @@ public class OrderAndDetailServiceTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].streetAddress").value("Str nuf nr 13"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].shippedFrom.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].customerID.id").value(1));
-
+        assert(true);
     }
 
     @Test
@@ -88,14 +90,14 @@ public class OrderAndDetailServiceTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-
+        assert(true);
     }
 
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new StringObjectMapperException(e.getMessage());
         }
     }
 }

@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -29,15 +28,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ContextConfiguration(classes={SingleLocationStrategy.class})
 public class LocationSingleLocationStrategyUnitTests {
     @Autowired
-    SingleLocationStrategy singleLocationStrategy;
+    private SingleLocationStrategy singleLocationStrategy;
     @MockBean
-    StockRepository stockRepository;
+    private StockRepository stockRepository;
     @MockBean
-    OrderDetailRepository orderDetailRepository;
-    @MockBean
-    LocationRepository locationRepository;
-    @MockBean
-    ProductRepository productRepository;
+    private LocationRepository locationRepository;
     @Before
     public void setUp() {
         Location location1=new Location("Cluj1","Romania","Cluj-Napoca","Cluj","Str teo nr.1");
@@ -47,9 +42,9 @@ public class LocationSingleLocationStrategyUnitTests {
         Location location3=new Location("Cluj2","Romania","Cluj-Napoca","Cluj","Str brs nr.9");
         location3.setId(3);
 
-        Mockito.when(locationRepository.findById(1)).thenReturn(java.util.Optional.of(location1));
-        Mockito.when(locationRepository.findById(2)).thenReturn(java.util.Optional.of(location2));
-        Mockito.when(locationRepository.findById(3)).thenReturn(java.util.Optional.of(location3));
+        Mockito.when(locationRepository.findById(1)).thenReturn(Optional.of(location1));
+        Mockito.when(locationRepository.findById(2)).thenReturn(Optional.of(location2));
+        Mockito.when(locationRepository.findById(3)).thenReturn(Optional.of(location3));
         Mockito.when(locationRepository.findAll()).thenReturn(Arrays.asList(location1, location2, location3));
 
         StockID stockID1=new StockID(1,1);

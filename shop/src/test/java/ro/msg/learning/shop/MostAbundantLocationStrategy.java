@@ -27,15 +27,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ContextConfiguration(classes={MostAbundantStrategy.class})
 public class MostAbundantLocationStrategy {
     @Autowired
-    MostAbundantStrategy mostAbundantStrategy;
+    private MostAbundantStrategy mostAbundantStrategy;
     @MockBean
-    StockRepository stockRepository;
+    private StockRepository stockRepository;
     @MockBean
-    OrderDetailRepository orderDetailRepository;
-    @MockBean
-    LocationRepository locationRepository;
-    @MockBean
-    ProductRepository productRepository;
+    private LocationRepository locationRepository;
     @Before
     public void setUp() {
         Location location1=new Location("Cluj1","Romania","Cluj-Napoca","Cluj","Str teo nr.1");
@@ -45,9 +41,9 @@ public class MostAbundantLocationStrategy {
         Location location3=new Location("Cluj2","Romania","Cluj-Napoca","Cluj","Str brs nr.9");
         location3.setId(3);
 
-        Mockito.when(locationRepository.findById(1)).thenReturn(java.util.Optional.of(location1));
-        Mockito.when(locationRepository.findById(2)).thenReturn(java.util.Optional.of(location2));
-        Mockito.when(locationRepository.findById(3)).thenReturn(java.util.Optional.of(location3));
+        Mockito.when(locationRepository.findById(1)).thenReturn(Optional.of(location1));
+        Mockito.when(locationRepository.findById(2)).thenReturn(Optional.of(location2));
+        Mockito.when(locationRepository.findById(3)).thenReturn(Optional.of(location3));
         Mockito.when(locationRepository.findAll()).thenReturn(Arrays.asList(location1, location2, location3));
 
 
@@ -60,8 +56,8 @@ public class MostAbundantLocationStrategy {
 
         Mockito.when(stockRepository.findByLocation(1)).thenReturn(Arrays.asList(stock1,stock2));
         Mockito.when(stockRepository.findByLocation(2)).thenReturn(Collections.singletonList(stock3));
-        Mockito.when(stockRepository.findLargestLocationForProduct(1,5)).thenReturn(java.util.Optional.of(2));
-        Mockito.when(stockRepository.findLargestLocationForProduct(2,5)).thenReturn(java.util.Optional.of(1));
+        Mockito.when(stockRepository.findLargestLocationForProduct(1,5)).thenReturn(Optional.of(2));
+        Mockito.when(stockRepository.findLargestLocationForProduct(2,5)).thenReturn(Optional.of(1));
     }
     @Test
     public void contextLoads() {
