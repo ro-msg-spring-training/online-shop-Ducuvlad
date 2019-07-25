@@ -75,6 +75,5 @@ public class MostAbundantLocationStrategy {
             assertThat(mostAbundantStrategy.getLocationsForOrder(order1)).isEqualTo(Collections.singletonList(location1.get()));
             assertThat(mostAbundantStrategy.getLocationsForOrder(order2)).isEqualTo(Arrays.asList(location1.get(),location2.get()));
         }
-        //todo test exception
     }
 }

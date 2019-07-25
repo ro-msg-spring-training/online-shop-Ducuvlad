@@ -12,15 +12,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.util.NestedServletException;
 import ro.msg.learning.shop.dto.OrderAndDetailsDTO;
 import ro.msg.learning.shop.dto.ProductQuantityDTO;
-import ro.msg.learning.shop.exception.NoLocationException;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -70,7 +67,7 @@ public class OrderAndDetailServiceTests {
 
     }
 
-    @Test(expected = NestedServletException.class)
+    @Test
     public void createOrdersFailNoStock() throws Exception
     {
         //fail to create orders because of insufficient stock
@@ -78,26 +75,20 @@ public class OrderAndDetailServiceTests {
         ProductQuantityDTO detail2=new ProductQuantityDTO(2,1000);
         OrderAndDetailsDTO order1=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Collections.singletonList(detail1),1);
         OrderAndDetailsDTO order2=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Arrays.asList(detail1,detail2),1);
+        mvc.perform(MockMvcRequestBuilders
+                .post("/orders/")
+                .content(asJsonString(order1))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
 
-        try {
-            mvc.perform(MockMvcRequestBuilders
-                    .post("/orders/")
-                    .content(asJsonString(order1))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON));
-        }catch(NestedServletException noLocationException){
-            assertThat(noLocationException.getRootCause().getMessage())
-                    .isEqualTo("No location with the necessary stock found for product 1 ERROR:1");//or is equal to something else
-        }
-        try {
         mvc.perform( MockMvcRequestBuilders
                 .post("/orders/")
                 .content(asJsonString(order2))
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
-        }catch(NoLocationException noLocationException2){
-            assertThat(noLocationException2.getMessage()).isEqualTo("No location with the necessary stock found for product 1 ERROR:1");
-        }
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
     }
 
     public static String asJsonString(final Object obj) {

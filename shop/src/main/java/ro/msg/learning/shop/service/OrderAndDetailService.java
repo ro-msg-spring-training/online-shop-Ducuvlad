@@ -45,12 +45,12 @@ public class OrderAndDetailService {
         ctx.refresh();
         IStrategy strategy=ctx.getBean(IStrategy.class);*/
         List<Order> newOrders=new ArrayList<>();
-
+        try {
             //get list of stocks used by the order
-            List<Location> productLocations=strategy.getLocationsForOrder(requirements);
-            List<ProductQuantityDTO> products=requirements.getProducts();
+            List<Location> productLocations = strategy.getLocationsForOrder(requirements);
+            List<ProductQuantityDTO> products = requirements.getProducts();
             //modify stock quantity
-            for(int i=0;i<productLocations.size();i++) {
+            for (int i = 0; i < productLocations.size(); i++) {
                 Optional<Stock> stock = stockRepository.findStockDetailByPK(products.get(i).getProductID(), productLocations.get(i).getId());
 
                 Stock s;
@@ -61,7 +61,7 @@ public class OrderAndDetailService {
                 }
             }
             //save orders
-            productLocations.stream().distinct().map(location->new Order(requirements.getCreatedAt(),
+            productLocations.stream().distinct().map(location -> new Order(requirements.getCreatedAt(),
                     requirements.getCountry(),
                     requirements.getCity(),
                     requirements.getCounty(),
@@ -69,10 +69,11 @@ public class OrderAndDetailService {
                     location,
                     customerRepository.getOne(requirements.getCustomerID())))
                     .forEach(order ->
-                    {newOrders.add(order);
-                    orderRepository.save(order);
-                    } );
-
+                    {
+                        newOrders.add(order);
+                        orderRepository.save(order);
+                    });
+        }catch(NoLocationException nle){throw new NoLocationException(nle.getMessage());}
         return newOrders;
     }
 }
