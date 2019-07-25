@@ -5,7 +5,6 @@ import ro.msg.learning.shop.model.Location;
 import java.util.List;
 
 public interface IStrategy {
-
     List<Location> getLocationsForOrder(OrderAndDetailsDTO order) ;
 }
 
