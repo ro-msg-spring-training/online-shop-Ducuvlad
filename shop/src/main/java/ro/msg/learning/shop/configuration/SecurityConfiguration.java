@@ -1,4 +1,4 @@
-package ro.msg.learning.shop.Security;
+package ro.msg.learning.shop.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,12 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-
 @Configuration
-@Profile("httpbasic")
-@EnableWebSecurity
-public class HTTPBasicSecurity extends WebSecurityConfigurerAdapter implements ISecurity {
+public class SecurityConfiguration {
     @Autowired
     private AuthenticationProvider authenticationProvider;
 
@@ -35,21 +31,49 @@ public class HTTPBasicSecurity extends WebSecurityConfigurerAdapter implements I
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;
     }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception
-    {
-        http
-                .csrf().disable()
-                .authorizeRequests().anyRequest().authenticated()
-                .and()
-                .httpBasic();
-        http.headers().frameOptions().disable();//todo refactor, might be able to make an interface
-    }
-
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    @Configuration
+    @Profile("httpbasic")
+    @EnableWebSecurity
+    public class HTTPBasicSecurity extends WebSecurityConfigurerAdapter{
+        @Override
+        protected void configure(HttpSecurity http) throws Exception
+        {
+            http
+                    .csrf().disable()
+                    .authorizeRequests().anyRequest().authenticated()
+                    .and()
+                    .httpBasic();
+            http.headers().frameOptions().disable();
+        }
+    }
+    @Configuration
+    @Profile("withform")
+    @EnableWebSecurity
+    public class WithFormSecurity extends WebSecurityConfigurerAdapter{
+        @Override
+        protected void configure(HttpSecurity http) throws Exception
+        {
+            http
+                    .csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers("/login*").permitAll()
+                    .anyRequest().authenticated()
+                    .and()
+                    .formLogin()
+                    .loginPage("/login.html")
+                    .loginProcessingUrl("/perform_login")
+                    .defaultSuccessUrl("/homepage.html", true)
+                    .and()
+                    .logout()
+                    .logoutUrl("/perform_logout")
+                    .deleteCookies("JSESSIONID");
+
+            http.headers().frameOptions().disable();
+        }
+
     }
 }
