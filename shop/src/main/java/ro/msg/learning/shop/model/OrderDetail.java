@@ -8,13 +8,14 @@ import lombok.ToString;
 import javax.persistence.*;/*
 
  */
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "orderdetail_tbl")
 @Data
 @ToString
-public class OrderDetail implements java.io.Serializable{
+public class OrderDetail implements java.io.Serializable {
     @EmbeddedId
     private OrderDetailID orderDetailID;
     @Column(name = "quantity", nullable = false)

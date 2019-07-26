@@ -6,6 +6,7 @@ import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.repository.ProductCategoryRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
 import ro.msg.learning.shop.repository.SupplierRepository;
+
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,7 +26,7 @@ public class ProductService {
     }
 
     public List<Product> findAll() {
-        return  productRepository.findAll();
+        return productRepository.findAll();
     }
 
     public Product findByID(int ID) {
@@ -33,22 +34,23 @@ public class ProductService {
         return Product.orElse(null);
 
     }
+
     @Transactional
     public Product updateProduct(Integer ProductID, String name, String description,
-                                 BigDecimal price, double weight, Integer productCategoryID, Integer supplierID,String imageUrl) {
+                                 BigDecimal price, double weight, Integer productCategoryID, Integer supplierID, String imageUrl) {
 
         Optional<Product> Product = productRepository.findById(ProductID);
 
         Product.ifPresent(product -> {
-                    product.setDescription(description);
-                    product.setName(name);
-                    product.setPrice(price);
-                    product.setWeight(weight);
-                    product.setImageUrl(imageUrl);
-                    product.setProductCategory(productCategoryRepository.getOne(productCategoryID));
-                    //productCategory.setName();
-                    //productCategory.getDescription();
-                    product.setSupplier(supplierRepository.getOne(supplierID));
+            product.setDescription(description);
+            product.setName(name);
+            product.setPrice(price);
+            product.setWeight(weight);
+            product.setImageUrl(imageUrl);
+            product.setProductCategory(productCategoryRepository.getOne(productCategoryID));
+            //productCategory.setName();
+            //productCategory.getDescription();
+            product.setSupplier(supplierRepository.getOne(supplierID));
         });
 
         return Product.orElse(null);
@@ -59,14 +61,15 @@ public class ProductService {
         return productRepository.save(Product);
     }
 
-    public void deleteProduct(int ProductId){
+    public void deleteProduct(int ProductId) {
         productRepository.deleteById(ProductId);
     }
-    
+
 
     public ProductDTO productToDTO(Product product) {
         return new ProductDTO(product);
     }
+
     public Product dtoToProduct(ProductDTO productDTO) {
 
         return new Product(

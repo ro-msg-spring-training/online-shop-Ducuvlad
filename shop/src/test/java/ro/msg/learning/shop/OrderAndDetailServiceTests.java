@@ -24,8 +24,9 @@ import java.util.Collections;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ShopApplication.class , webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(classes = ShopApplication.class, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @Profile("test")
 @AutoConfigureMockMvc(addFilters = false)
 @TestPropertySource(
@@ -35,15 +36,14 @@ public class OrderAndDetailServiceTests {
     private MockMvc mvc;
 
     @Test
-    public void createOrdersSuccess() throws Exception
-    {
-        ProductQuantityDTO detail1=new ProductQuantityDTO(1,5);
-        ProductQuantityDTO detail2=new ProductQuantityDTO(2,5);
-        OrderAndDetailsDTO order1=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Collections.singletonList(detail1),1);
-        OrderAndDetailsDTO order2=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Arrays.asList(detail1,detail2),1);
+    public void createOrdersSuccess() throws Exception {
+        ProductQuantityDTO detail1 = new ProductQuantityDTO(1, 5);
+        ProductQuantityDTO detail2 = new ProductQuantityDTO(2, 5);
+        OrderAndDetailsDTO order1 = new OrderAndDetailsDTO(Date.valueOf("2018-09-09"), "Romania", "Oradea,", "Bihor", "Str nuf nr 13", Collections.singletonList(detail1), 1);
+        OrderAndDetailsDTO order2 = new OrderAndDetailsDTO(Date.valueOf("2018-09-09"), "Romania", "Oradea,", "Bihor", "Str nuf nr 13", Arrays.asList(detail1, detail2), 1);
         assertThat(detail1.getQuantity()).isEqualTo(5);
 
-        mvc.perform( MockMvcRequestBuilders
+        mvc.perform(MockMvcRequestBuilders
                 .post("/orders/")
                 .content(asJsonString(order1))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -58,7 +58,7 @@ public class OrderAndDetailServiceTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].shippedFrom.id").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].customerID.id").value(1));
 
-        mvc.perform( MockMvcRequestBuilders
+        mvc.perform(MockMvcRequestBuilders
                 .post("/orders/")
                 .content(asJsonString(order2))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -75,13 +75,12 @@ public class OrderAndDetailServiceTests {
     }
 
     @Test
-    public void createOrdersFailNoStock() throws Exception
-    {
+    public void createOrdersFailNoStock() throws Exception {
         //fail to create orders because of insufficient stock
-        ProductQuantityDTO detail1=new ProductQuantityDTO(1,1000);
-        ProductQuantityDTO detail2=new ProductQuantityDTO(2,1000);
-        OrderAndDetailsDTO order1=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Collections.singletonList(detail1),1);
-        OrderAndDetailsDTO order2=new OrderAndDetailsDTO(Date.valueOf("2018-09-09"),"Romania","Oradea,","Bihor","Str nuf nr 13", Arrays.asList(detail1,detail2),1);
+        ProductQuantityDTO detail1 = new ProductQuantityDTO(1, 1000);
+        ProductQuantityDTO detail2 = new ProductQuantityDTO(2, 1000);
+        OrderAndDetailsDTO order1 = new OrderAndDetailsDTO(Date.valueOf("2018-09-09"), "Romania", "Oradea,", "Bihor", "Str nuf nr 13", Collections.singletonList(detail1), 1);
+        OrderAndDetailsDTO order2 = new OrderAndDetailsDTO(Date.valueOf("2018-09-09"), "Romania", "Oradea,", "Bihor", "Str nuf nr 13", Arrays.asList(detail1, detail2), 1);
         assertThat(detail1.getQuantity()).isEqualTo(1000);
 
         mvc.perform(MockMvcRequestBuilders
@@ -91,7 +90,7 @@ public class OrderAndDetailServiceTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
-        mvc.perform( MockMvcRequestBuilders
+        mvc.perform(MockMvcRequestBuilders
                 .post("/orders/")
                 .content(asJsonString(order2))
                 .contentType(MediaType.APPLICATION_JSON)

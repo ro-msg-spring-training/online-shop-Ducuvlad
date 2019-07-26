@@ -5,11 +5,10 @@ import ro.msg.learning.shop.model.OrderDetail;
 import ro.msg.learning.shop.model.OrderDetailID;
 
 
-
 /*
 
  */
-public interface OrderDetailRepository  extends JpaRepository<OrderDetail, OrderDetailID> {
+public interface OrderDetailRepository extends JpaRepository<OrderDetail, OrderDetailID> {
     /*@Query("SELECT od FROM OrderDetail od where od.orderDetailID.oid = orderID")
     Collection<OrderDetail> findOrderDetailsByOrderID(@Param("orderID") int id);
 

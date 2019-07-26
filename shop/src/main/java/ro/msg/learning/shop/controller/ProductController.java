@@ -20,7 +20,7 @@ public class ProductController {
 
     @GetMapping(value = "/all", headers = "Accept=application/json")
     public List<ProductDTO> allProducts() {
-        List<Product>products=productService.findAll();
+        List<Product> products = productService.findAll();
         return products.stream()
                 .map(ProductDTO::new)
                 .collect(Collectors.toList());
@@ -35,7 +35,7 @@ public class ProductController {
     public ProductDTO createProduct(@RequestBody ProductDTO product) {
         //I need to find the ProductCategory and Supplier so I use the dtoToProduct from product service
         //that allows me to get to said classes repos
-        Product productToSave=productService.dtoToProduct(product);
+        Product productToSave = productService.dtoToProduct(product);
         productService.saveProduct(productToSave);
         return product;
     }
@@ -46,7 +46,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ProductDTO updateProduct(@RequestBody ProductDTO product,@PathVariable("id") Integer id) {
+    public ProductDTO updateProduct(@RequestBody ProductDTO product, @PathVariable("id") Integer id) {
         return productService.productToDTO(productService.updateProduct(id,
                 product.getName(),
                 product.getDescription(),

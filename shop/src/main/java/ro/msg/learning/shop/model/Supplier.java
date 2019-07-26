@@ -23,6 +23,6 @@ public class Supplier extends BaseEntity<Integer> {
     @Override
     public String toString() {
         return "Base{" +
-                "Supplier='" + name  + super.toString();
+                "Supplier='" + name + super.toString();
     }
 }

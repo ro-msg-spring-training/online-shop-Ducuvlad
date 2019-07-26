@@ -22,11 +22,13 @@ public class OrderController {
 
     @PostMapping("/")
     public List<OrderDTO> createProduct(@RequestBody OrderAndDetailsDTO order) {
-        List<Order> ordersToSave=new ArrayList<>();
+        List<Order> ordersToSave = new ArrayList<>();
         try {
-             ordersToSave = orderService.saveOrders(order);
-        }catch(NoLocationException nle){throw new NoLocationException(nle.getMessage());}
-        return ordersToSave.stream().map(o-> new OrderDTO(o.getCreatedAt(),o.getCountry(),o.getCity(),o.getCounty(),
-                o.getStreetAddress(),o.getShippedFrom(),o.getCustomer())).collect(Collectors.toList());
+            ordersToSave = orderService.saveOrders(order);
+        } catch (NoLocationException nle) {
+            throw new NoLocationException(nle.getMessage());
+        }
+        return ordersToSave.stream().map(o -> new OrderDTO(o.getCreatedAt(), o.getCountry(), o.getCity(), o.getCounty(),
+                o.getStreetAddress(), o.getShippedFrom(), o.getCustomer())).collect(Collectors.toList());
     }
 }

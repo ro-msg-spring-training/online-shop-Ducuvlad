@@ -12,7 +12,7 @@ import java.io.Serializable;/*
 
 @MappedSuperclass
 @Data
-public abstract class BaseEntity <I extends Serializable> implements Serializable {
+public abstract class BaseEntity<I extends Serializable> implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

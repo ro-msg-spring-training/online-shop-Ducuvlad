@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;/*
 
  */
+
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,7 +31,7 @@ public class Customer extends BaseEntity<Integer> {
     @Override
     public String toString() {
         return "Base{" +
-                "Customer='" + firstName  +
+                "Customer='" + firstName +
                 " " + lastName + '\'' +
                 ", username=" + username + '\'' +
                 ", username=" + emailAddress +

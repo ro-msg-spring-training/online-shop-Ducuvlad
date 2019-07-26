@@ -14,34 +14,36 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Configuration
 public class SecurityConfiguration {
     @Autowired
     private AuthenticationProvider authenticationProvider;
 
     @Autowired
-    public void configureAuthManager(AuthenticationManagerBuilder authenticationManagerBuilder){
+    public void configureAuthManager(AuthenticationManagerBuilder authenticationManagerBuilder) {
         authenticationManagerBuilder.authenticationProvider(authenticationProvider);
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder, @Qualifier("userDetailService") UserDetailsService userDetailsService){
-        DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();//todo switching profiles hides the bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder, @Qualifier("userDetailService") UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();//todo switching profiles hides the bean
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Configuration
     @Profile("httpbasic")
     @EnableWebSecurity
-    public class HTTPBasicSecurity extends WebSecurityConfigurerAdapter{
+    public class HTTPBasicSecurity extends WebSecurityConfigurerAdapter {
         @Override
-        protected void configure(HttpSecurity http) throws Exception
-        {
+        protected void configure(HttpSecurity http) throws Exception {
             http
                     .csrf().disable()
                     .authorizeRequests().anyRequest().authenticated()
@@ -50,13 +52,13 @@ public class SecurityConfiguration {
             http.headers().frameOptions().disable();
         }
     }
+
     @Configuration
     @Profile("withform")
     @EnableWebSecurity
-    public class WithFormSecurity extends WebSecurityConfigurerAdapter{
+    public class WithFormSecurity extends WebSecurityConfigurerAdapter {
         @Override
-        protected void configure(HttpSecurity http) throws Exception
-        {
+        protected void configure(HttpSecurity http) throws Exception {
             http
                     .csrf().disable()
                     .authorizeRequests()

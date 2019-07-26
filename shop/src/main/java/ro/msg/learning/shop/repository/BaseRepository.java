@@ -6,6 +6,7 @@ import ro.msg.learning.shop.model.BaseEntity;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
+
 /*
 
  */

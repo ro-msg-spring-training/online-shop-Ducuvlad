@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.model.Customer;
 import ro.msg.learning.shop.repository.CustomerRepository;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
@@ -26,12 +27,13 @@ public class UserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
-        Optional<Customer> customer=customerRepository.findCustomerByUsername(username);
-        Customer user=customer.get();
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Optional<Customer> customer = customerRepository.findFirstByUsername(username);
+        Customer user = customer.get();
         return new User(user.getUsername(), passwordEncoder.encode(user.getPassword()), getGrantedAuthorities());
 
     }
+
     private Collection<GrantedAuthority> getGrantedAuthorities() {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));

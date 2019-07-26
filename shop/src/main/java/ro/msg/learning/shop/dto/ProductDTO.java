@@ -22,11 +22,12 @@ public class ProductDTO implements Serializable {
     private String categoryName;
     private String categoryDescription;
     private Integer supplierID;
+
     public ProductDTO(Product product) {
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = product.getPrice();
-        this.weight =product.getWeight();
+        this.weight = product.getWeight();
         this.imageUrl = product.getImageUrl();
         this.categoryID = product.getProductCategory().getId();
         this.categoryName = product.getProductCategory().getName();

@@ -15,16 +15,17 @@ import ro.msg.learning.shop.strategy.SingleLocationStrategy;
 public class StrategyConfiguration {
     @Value("${strategy}")
     private String strategyDescription;
+
     @Bean
     public IStrategy getStrategy(StockRepository stockRepository, LocationRepository locationRepository) throws StrategyException {
 
-        switch(strategyDescription){
+        switch (strategyDescription) {
             case "single location":
-                return new SingleLocationStrategy(stockRepository,locationRepository);
+                return new SingleLocationStrategy(stockRepository, locationRepository);
             case "most abundant":
-                return new MostAbundantStrategy(stockRepository,locationRepository);
+                return new MostAbundantStrategy(stockRepository, locationRepository);
             default:
-            throw new StrategyException("NO VALID CONFIGURATION FOR STRATEGY");
+                throw new StrategyException("NO VALID CONFIGURATION FOR STRATEGY");
 
         }
     }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+
 /*
 
  */
@@ -36,12 +37,12 @@ public class Product extends BaseEntity<Integer> {
     public String toString() {
         return "Base{" +
                 "Product =" + name
-                + '\'' +",Description="+ description +
-                + '\'' +",Price="+ price +
-                + '\'' +",Weight="+ weight +
-                + '\'' +",ProductCategory="+ productCategory.getName() +
-                + '\'' +",Supplier="+ supplier.getName() +
-                + '\'' +",URL="+ imageUrl +
+                + '\'' + ",Description=" + description +
+                +'\'' + ",Price=" + price +
+                +'\'' + ",Weight=" + weight +
+                +'\'' + ",ProductCategory=" + productCategory.getName() +
+                +'\'' + ",Supplier=" + supplier.getName() +
+                +'\'' + ",URL=" + imageUrl +
                 super.toString();
     }
 }

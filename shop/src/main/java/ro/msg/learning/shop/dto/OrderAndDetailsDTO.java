@@ -26,9 +26,9 @@ public class OrderAndDetailsDTO implements Serializable {
         this.city = order.getCity();
         this.country = order.getCountry();
         this.county = order.getCounty();
-        this.streetAddress =order.getStreetAddress();
-        this.createdAt=order.getCreatedAt();
-        this.products=productsDetails;
-        this.customerID=order.getCustomer().getId();
+        this.streetAddress = order.getStreetAddress();
+        this.createdAt = order.getCreatedAt();
+        this.products = productsDetails;
+        this.customerID = order.getCustomer().getId();
     }
 }

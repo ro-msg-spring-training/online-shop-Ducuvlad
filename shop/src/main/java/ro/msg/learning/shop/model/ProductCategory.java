@@ -1,13 +1,15 @@
 package ro.msg.learning.shop.model;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
-        import javax.persistence.Entity;
-        import javax.persistence.Table;/*
+import javax.persistence.Entity;
+import javax.persistence.Table;/*
 
-         */
+ */
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -23,7 +25,7 @@ public class ProductCategory extends BaseEntity<Integer> {
     public String toString() {
         return "Base{" +
                 " Category=" + name
-                + '\'' +",Description="+ description +
+                + '\'' + ",Description=" + description +
                 super.toString();
     }
 }
