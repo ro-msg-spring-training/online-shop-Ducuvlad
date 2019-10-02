@@ -6,15 +6,19 @@ import ro.msg.learning.shop.dto.OrderAndDetailsDTO;
 import ro.msg.learning.shop.dto.ProductQuantityDTO;
 import ro.msg.learning.shop.exception.NoLocationException;
 import ro.msg.learning.shop.model.Location;
-import ro.msg.learning.shop.model.OrderDetail;
 import ro.msg.learning.shop.model.Order;
+import ro.msg.learning.shop.model.OrderDetail;
 import ro.msg.learning.shop.model.Stock;
-import ro.msg.learning.shop.repository.*;
+import ro.msg.learning.shop.repository.CustomerRepository;
+import ro.msg.learning.shop.repository.OrderDetailRepository;
+import ro.msg.learning.shop.repository.OrderRepository;
+import ro.msg.learning.shop.repository.StockRepository;
 import ro.msg.learning.shop.strategy.IStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @AllArgsConstructor
 @Service
 public class OrderAndDetailService {
@@ -26,7 +30,7 @@ public class OrderAndDetailService {
 
 
     public List<OrderDetail> findAll() {
-        return  orderDetailRepository.findAll();
+        return orderDetailRepository.findAll();
     }
 
     public Order findByID(int ID) {
@@ -39,12 +43,9 @@ public class OrderAndDetailService {
         return orderRepository.save(Order);
     }
 
-    public List<Order> saveOrders (OrderAndDetailsDTO requirements){
+    public List<Order> saveOrders(OrderAndDetailsDTO requirements) {
         //create orders for each different location
-        /*AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        ctx.refresh();
-        IStrategy strategy=ctx.getBean(IStrategy.class);*/
-        List<Order> newOrders=new ArrayList<>();
+        List<Order> newOrders = new ArrayList<>();
         try {
             //get list of stocks used by the order
             List<Location> productLocations = strategy.getLocationsForOrder(requirements);
@@ -73,7 +74,9 @@ public class OrderAndDetailService {
                         newOrders.add(order);
                         orderRepository.save(order);
                     });
-        }catch(NoLocationException nle){throw new NoLocationException(nle.getMessage());}
+        } catch (NoLocationException nle) {
+            throw new NoLocationException(nle.getMessage());
+        }
         return newOrders;
     }
 }

@@ -1,10 +1,14 @@
 package ro.msg.learning.shop.model;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 /*
 
  */
@@ -18,12 +22,6 @@ public class Stock implements java.io.Serializable{
 
     @EmbeddedId
     private StockID stockID;
-   /* @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "pid")
-    private Product product ;
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "lid")
-    private Location location;*/
     @Column(name = "quantity", nullable = false)
     private int quantity;
 }
