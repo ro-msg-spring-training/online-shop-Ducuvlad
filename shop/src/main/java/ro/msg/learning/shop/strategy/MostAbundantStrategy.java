@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 public class MostAbundantStrategy implements IStrategy {
     private StockRepository stockRepository;
     private LocationRepository locationRepository;
+
     @Override
-    public List<Location>  getLocationsForOrder(OrderAndDetailsDTO order) {
-        //List<Location> locations = locationRepository.findAll();
+    public List<Location> getLocationsForOrder(OrderAndDetailsDTO order) {
 
         List<ProductQuantityDTO> products = order.getProducts();
 
@@ -26,15 +26,15 @@ public class MostAbundantStrategy implements IStrategy {
         return products.stream()
                 .map(product ->
                 {
-                    Optional<Integer> location= stockRepository.findLargestLocationForProduct(product.getProductID(),product.getQuantity());
-                    if(location.isPresent()) {
-                        Optional<Location>newLocation=locationRepository.findById(location.get());
-                        if(newLocation.isPresent())
+                    Optional<Integer> location = stockRepository.findLargestLocationForProduct(product.getProductID(), product.getQuantity());
+                    if (location.isPresent()) {
+                        Optional<Location> newLocation = locationRepository.findById(location.get());
+                        if (newLocation.isPresent())
                             return newLocation.get();
-                        else throw new  NoLocationException("No location with the necessary stock found for a product ERROR:2");
-                    }
-                    else
-                        throw new  NoLocationException("No location with the necessary stock found for product "+product.getProductID()+" ERROR:1");
+                        else
+                            throw new NoLocationException("No location with the necessary stock found for a product ERROR:2");
+                    } else
+                        throw new NoLocationException("No location with the necessary stock found for product " + product.getProductID() + " ERROR:1");
                 })
                 .collect(Collectors.toList());
     }

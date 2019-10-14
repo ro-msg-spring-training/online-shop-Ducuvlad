@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import ro.msg.learning.shop.dto.OrderAndDetailsDTO;
 import ro.msg.learning.shop.dto.ProductQuantityDTO;
 import ro.msg.learning.shop.exception.NoLocationException;
-import ro.msg.learning.shop.model.*;
+import ro.msg.learning.shop.model.BaseEntity;
+import ro.msg.learning.shop.model.Location;
+import ro.msg.learning.shop.model.Stock;
 import ro.msg.learning.shop.repository.LocationRepository;
 import ro.msg.learning.shop.repository.StockRepository;
 
@@ -19,26 +21,26 @@ public class SingleLocationStrategy implements IStrategy {
 
     private StockRepository stockRepository;
     private LocationRepository locationRepository;
+
     @Override
-    public List<Location>  getLocationsForOrder(OrderAndDetailsDTO order) {
+    public List<Location> getLocationsForOrder(OrderAndDetailsDTO order) {
         List<Location> locations = locationRepository.findAll()
                 .stream()
-                .filter(location -> checkIfLocationHasAll(order.getProducts(),location))
+                .filter(location -> checkIfLocationHasAll(order.getProducts(), location))
                 .collect(Collectors.toList());
         //compare by ID
-        Optional<Location> singleLocation=locations.stream().min(Comparator.comparingInt(BaseEntity::getId));
-        if(locations.size()==0)
+        Optional<Location> singleLocation = locations.stream().min(Comparator.comparingInt(BaseEntity::getId));
+        if (locations.size() == 0)
             throw new NoLocationException("No location that has all products has been found");
-        List<Location> singleLocations=new ArrayList<>();
-        for(int i=0;i<order.getProducts().size();i++)
-        {
+        List<Location> singleLocations = new ArrayList<>();
+        for (int i = 0; i < order.getProducts().size(); i++) {
             singleLocations.add(singleLocation.get());
         }
         return singleLocations;
     }
 
 
-    private boolean checkIfLocationHasAll(List<ProductQuantityDTO> productsQuantities,Location location )   {
+    private boolean checkIfLocationHasAll(List<ProductQuantityDTO> productsQuantities, Location location) {
 
         List<Stock> stocks = stockRepository.findByLocation(location.getId());
         List<Integer> stockProductsIds = stocks.stream()
@@ -53,8 +55,7 @@ public class SingleLocationStrategy implements IStrategy {
 
         return productsQuantities.stream()
                 .allMatch(product -> (product.getQuantity() <=
-                        stocks.stream().filter(s->s.getStockID().getProductID()==product.getProductID()).findFirst().get().getQuantity()));
-
+                        stocks.stream().filter(s -> s.getStockID().getProductID() == product.getProductID()).findFirst().get().getQuantity()));
 
 
     }
